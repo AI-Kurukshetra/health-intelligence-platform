@@ -9,6 +9,7 @@ import { GlobalSearch } from "@/components/layout/global-search";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { ProductTour } from "@/components/shared/product-tour";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +37,7 @@ export function DashboardShell({ user, profile, children }: DashboardShellProps)
 
   return (
     <div className="flex h-screen min-h-0 w-full overflow-hidden">
+      <ProductTour role={role} />
       <AppSidebar userRole={role} collapsed={collapsed} onToggle={toggle} />
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-muted/30">
         <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border bg-background/80 px-6 md:px-10 backdrop-blur">
@@ -46,6 +48,16 @@ export function DashboardShell({ user, profile, children }: DashboardShellProps)
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("product-tour:start"));
+              }}
+              data-tour="tour-launch"
+            >
+              Take tour
+            </Button>
             <ThemeSwitcher />
             <DropdownMenu>
               <DropdownMenuTrigger

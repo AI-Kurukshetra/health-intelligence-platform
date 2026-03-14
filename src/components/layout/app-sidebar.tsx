@@ -34,6 +34,7 @@ export function AppSidebar({ userRole, collapsed, onToggle }: AppSidebarProps) {
 
   return (
     <aside
+      data-tour="sidebar"
       className={cn(
         "flex h-full shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 ease-in-out",
         collapsed ? "w-[3.25rem]" : "w-56"
@@ -62,11 +63,16 @@ export function AppSidebar({ userRole, collapsed, onToggle }: AppSidebarProps) {
         {mainItems.map((item) => {
           const Icon = item.icon;
           const isActive = item.href === activeHref;
+          const tourKey = item.label
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
           return (
             <Link
               key={item.href + item.label}
               href={item.href}
               title={collapsed ? item.label : undefined}
+              data-tour={`nav-${tourKey}`}
               className={cn(
                 "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 collapsed && "justify-center px-2",
@@ -91,11 +97,16 @@ export function AppSidebar({ userRole, collapsed, onToggle }: AppSidebarProps) {
           {footerItems.map((item) => {
             const Icon = item.icon;
             const isActive = item.href === activeHref;
+            const tourKey = item.label
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "");
             return (
               <Link
                 key={item.href + item.label}
                 href={item.href}
                 title={collapsed ? item.label : undefined}
+                data-tour={`nav-${tourKey}`}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   collapsed && "justify-center px-2",

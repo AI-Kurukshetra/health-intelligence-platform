@@ -125,7 +125,7 @@ export default function CareGapsPage() {
             ))}
           </div>
 
-          <Card className="border-border/60 bg-card/80">
+          <Card className="border-border/60 bg-card/80" data-tour="care-gaps-table">
             <CardHeader>
               <CardTitle>Care Gap Details</CardTitle>
             </CardHeader>

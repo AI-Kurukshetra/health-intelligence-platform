@@ -317,7 +317,7 @@ export default function WorkflowsPage() {
             })}
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2" data-tour="workflows-list">
             {data.map((workflow) => (
               <WorkflowCard key={workflow.id} workflow={workflow} canManage={canManage} />
             ))}

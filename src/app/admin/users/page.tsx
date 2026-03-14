@@ -70,7 +70,7 @@ export default function AdminUsersPage() {
         ))}
       </div>
 
-      <Card className="border-border/60 bg-card/80">
+      <Card className="border-border/60 bg-card/80" data-tour="admin-users">
         <CardHeader>
           <CardTitle>Users</CardTitle>
         </CardHeader>

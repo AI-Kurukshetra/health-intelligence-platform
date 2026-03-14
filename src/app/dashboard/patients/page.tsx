@@ -135,7 +135,7 @@ export default function PatientsPage() {
             ))}
           </div>
 
-          <Card className="border-border/60 bg-card/80">
+          <Card className="border-border/60 bg-card/80" data-tour="patients-table">
             <CardHeader>
               <CardTitle>Patient List</CardTitle>
             </CardHeader>

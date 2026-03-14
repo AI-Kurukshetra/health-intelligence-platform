@@ -143,7 +143,7 @@ export default function TasksPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger
-            render={<Button size="sm">Create Task</Button>}
+            render={<Button size="sm" data-tour="tasks-create">Create Task</Button>}
           />
           <DialogContent className="max-w-lg">
             <DialogHeader>
@@ -308,7 +308,7 @@ export default function TasksPage() {
             ))}
           </div>
 
-          <Card className="border-border/60 bg-card/80">
+          <Card className="border-border/60 bg-card/80" data-tour="tasks-table">
             <CardHeader className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <CardTitle>Task Details</CardTitle>
               <div className="flex flex-wrap gap-3">

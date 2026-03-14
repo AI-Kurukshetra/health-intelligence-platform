@@ -267,7 +267,7 @@ export default function DashboardPage() {
         </p>
       )}
 
-      <Card className="border-border/60 bg-card/80">
+      <Card className="border-border/60 bg-card/80" data-tour="dashboard-kpis">
         <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
             <CardTitle>Population Pulse</CardTitle>

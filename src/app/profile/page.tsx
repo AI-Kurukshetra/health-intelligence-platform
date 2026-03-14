@@ -38,7 +38,7 @@ export default function ProfilePage() {
         <p className="text-muted-foreground">Your account details and role context.</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2" data-tour="profile-cards">
         <Card className="border-border/60 bg-card/80">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Email</CardTitle>

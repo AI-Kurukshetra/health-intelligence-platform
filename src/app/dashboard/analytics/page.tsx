@@ -159,7 +159,10 @@ export default function AnalyticsPage() {
         </p>
       )}
 
-      <Card className="border-border/60 bg-gradient-to-br from-primary/10 via-card to-background">
+      <Card
+        className="border-border/60 bg-gradient-to-br from-primary/10 via-card to-background"
+        data-tour="analytics-summary"
+      >
         <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
             <CardTitle>Executive Summary</CardTitle>
