@@ -5,11 +5,12 @@ import { sendError, sendSuccess } from "@/lib/utils/api";
 import { taskUpdateSchema } from "@/types/schemas";
 import type { Task } from "@/types/healthiq";
 
-type RouteParams = { params: { id: string } };
+type RouteContext = { params: Promise<{ id: string }> };
 
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   const auth = await requireAuth();
   if (!auth) return sendError("Unauthorized", 401);
+  const { id } = await context.params;
 
   const parsed = taskUpdateSchema.safeParse(await request.json());
   if (!parsed.success) {
@@ -22,7 +23,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     .update({
       ...parsed.data,
     })
-    .eq("id", params.id)
+    .eq("id", id)
     .select(
       "id, patient_id, assigned_to, created_by, org_id, title, description, task_type, priority, status, due_date, completed_at, created_at"
     )

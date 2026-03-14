@@ -33,6 +33,7 @@ export default function AnalyticsPage() {
     if (!gap.due_date || gap.status === "closed") return false;
     const due = new Date(gap.due_date);
     if (Number.isNaN(due.getTime())) return false;
+    // eslint-disable-next-line react-hooks/purity
     const diff = due.getTime() - Date.now();
     return diff <= 7 * 24 * 60 * 60 * 1000;
   }).length ?? 0;

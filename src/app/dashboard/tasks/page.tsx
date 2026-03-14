@@ -47,11 +47,13 @@ export default function TasksPage() {
   const statusParam = searchParams.get("status") ?? "";
   const priorityParam = searchParams.get("priority") ?? "";
   const dueDateParam = searchParams.get("due_date") ?? "";
+  const searchParam = searchParams.get("search") ?? "";
   const [statusFilter, setStatusFilter] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatusFilter(statusParam);
     setPriorityFilter(priorityParam);
   }, [statusParam, priorityParam]);

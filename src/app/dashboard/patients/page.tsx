@@ -41,6 +41,7 @@ export default function PatientsPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRiskTier(riskParam);
     setConditionCode(conditionParam);
     setSearch(searchParam);

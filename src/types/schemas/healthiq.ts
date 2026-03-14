@@ -32,14 +32,14 @@ export const careGapUpdateSchema = z.object({
 export const cohortCreateSchema = z.object({
   name: z.string().min(1, "Name is required."),
   description: z.string().optional(),
-  filter_config: z.record(z.unknown()).optional(),
+  filter_config: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const workflowCreateSchema = z.object({
   name: z.string().min(1, "Name is required."),
   trigger_type: z.string().min(1, "Trigger type is required."),
-  trigger_config: z.record(z.unknown()).optional(),
-  actions: z.array(z.record(z.unknown())).optional(),
+  trigger_config: z.record(z.string(), z.unknown()).optional(),
+  actions: z.array(z.record(z.string(), z.unknown())).optional(),
   is_active: z.boolean().optional(),
 });
 

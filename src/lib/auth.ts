@@ -59,9 +59,11 @@ export async function getProfile(userId: string) {
     }
   }
 
+  const safeRole = roleName ?? "care_manager";
+
   return {
     ...profile,
-    role: roleName,
+    role: safeRole,
   };
 }
 

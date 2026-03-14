@@ -327,7 +327,7 @@ export default function DashboardPage() {
         <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
             <CardTitle>AI Summary</CardTitle>
-            <CardDescription>Today's priority insights based on live KPIs.</CardDescription>
+            <CardDescription>Today&apos;s priority insights based on live KPIs.</CardDescription>
           </div>
           <Badge variant="outline" className="w-fit text-xs uppercase tracking-[0.2em]">
             Today
@@ -503,7 +503,7 @@ export default function DashboardPage() {
           <Card className="border-border/60 bg-card/80">
             <CardHeader>
               <CardTitle>Priority Focus</CardTitle>
-              <CardDescription>Today's high-impact opportunities.</CardDescription>
+              <CardDescription>Today&apos;s high-impact opportunities.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {kpiLoading ? (

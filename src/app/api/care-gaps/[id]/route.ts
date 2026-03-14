@@ -5,11 +5,12 @@ import { sendError, sendSuccess } from "@/lib/utils/api";
 import { careGapUpdateSchema } from "@/types/schemas";
 import type { CareGap } from "@/types/healthiq";
 
-type RouteParams = { params: { id: string } };
+type RouteContext = { params: Promise<{ id: string }> };
 
-export async function PATCH(request: NextRequest, { params }: RouteParams) {
+export async function PATCH(request: NextRequest, context: RouteContext) {
   const auth = await requireAuth();
   if (!auth) return sendError("Unauthorized", 401);
+  const { id } = await context.params;
 
   const parsed = careGapUpdateSchema.safeParse(await request.json());
   if (!parsed.success) {
@@ -24,7 +25,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       closed_by: parsed.data.closed_by ?? null,
       closed_at: parsed.data.closed_at ?? null,
     })
-    .eq("id", params.id)
+    .eq("id", id)
     .select(
       "id, patient_id, gap_type, description, due_date, status, closed_at, closed_by, created_at"
     )

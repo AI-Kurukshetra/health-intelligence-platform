@@ -1,7 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiPost, apiPatch } from "@/lib/api/client";
 import { QUERY_KEYS } from "@/constants/query-keys";
-import type { CarePlan, Patient, PatientCondition } from "@/types/healthiq";
+import type {
+  CareGap,
+  CarePlan,
+  Patient,
+  PatientCondition,
+  RiskScore,
+} from "@/types/healthiq";
 import type { PatientCreateValues, PatientUpdateValues } from "@/types/schemas";
 
 type PatientFilters = {
@@ -54,7 +60,7 @@ export function usePatient(id: string) {
 export function usePatientRisk(id: string) {
   return useQuery({
     queryKey: QUERY_KEYS.patients.risk(id),
-    queryFn: () => apiGet(`/patients/${id}/risk`),
+    queryFn: () => apiGet<RiskScore | null>(`/patients/${id}/risk`),
     enabled: Boolean(id),
   });
 }
@@ -62,7 +68,7 @@ export function usePatientRisk(id: string) {
 export function usePatientGaps(id: string) {
   return useQuery({
     queryKey: QUERY_KEYS.patients.gaps(id),
-    queryFn: () => apiGet(`/patients/${id}/gaps`),
+    queryFn: () => apiGet<CareGap[]>(`/patients/${id}/gaps`),
     enabled: Boolean(id),
   });
 }
