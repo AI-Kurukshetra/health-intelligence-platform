@@ -59,6 +59,16 @@ export default function ProfilePage() {
             <p className="mt-2 text-lg font-semibold text-foreground">{profile?.full_name ?? "N/A"}</p>
           </CardContent>
         </Card>
+        <Card className="border-border/60 bg-card/80">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Role</CardTitle>
+            <User className="h-4 w-4 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Access level</p>
+            <p className="mt-2 text-lg font-semibold text-foreground capitalize">{(profile?.role ?? "care_manager").replace(/_/g, " ")}</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

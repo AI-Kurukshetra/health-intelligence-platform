@@ -30,6 +30,7 @@ type DashboardShellProps = {
 export function DashboardShell({ user, profile, children }: DashboardShellProps) {
   const initial = (profile?.full_name || user.email || "U").slice(0, 1).toUpperCase();
   const role = (profile?.role ?? "care_manager") as Role;
+  const roleLabel = role.replace(/_/g, " ");
   const { collapsed, toggle } = useSidebar();
   const { signOut } = useAuth();
 
@@ -62,6 +63,7 @@ export function DashboardShell({ user, profile, children }: DashboardShellProps)
                   {profile?.full_name || user.email}
                 </div>
                 <div className="px-2 py-1 text-xs text-muted-foreground">{user.email}</div>
+                <div className="px-2 pb-2 text-xs text-muted-foreground capitalize">Role: {roleLabel}</div>
                 <DropdownMenuItem>
                   <Link href={ROUTES.PROFILE} className="block w-full">Profile</Link>
                 </DropdownMenuItem>
