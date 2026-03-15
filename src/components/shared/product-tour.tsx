@@ -211,7 +211,6 @@ export function ProductTour({ role }: ProductTourProps) {
   const [active, setActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
-  const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties | null>(null);
 
   const steps = useMemo(() => {
     const contentSteps = baseSteps.filter(
@@ -346,8 +345,8 @@ export function ProductTour({ role }: ProductTourProps) {
     if (!active) return;
     const step = steps[stepIndex];
     if (!step) {
-      stop(true);
-      return;
+      const frame = requestAnimationFrame(() => stop(true));
+      return () => cancelAnimationFrame(frame);
     }
 
     if (step.route && pathname !== step.route) {
@@ -359,13 +358,17 @@ export function ProductTour({ role }: ProductTourProps) {
     }
 
     lastPushedRoute.current = null;
+    let cancelled = false;
+    let frame: number | null = null;
+
     if (!step.selector) {
       targetRef.current = null;
-      setTargetRect(null);
-      return;
+      frame = requestAnimationFrame(() => setTargetRect(null));
+      return () => {
+        if (frame !== null) cancelAnimationFrame(frame);
+      };
     }
 
-    let cancelled = false;
     void waitForTarget(step.selector, 2500).then((target) => {
       if (cancelled) return;
       if (!target) {
@@ -378,6 +381,7 @@ export function ProductTour({ role }: ProductTourProps) {
 
     return () => {
       cancelled = true;
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, [active, stepIndex, steps, pathname, router, goNext, stop]);
 
@@ -398,7 +402,6 @@ export function ProductTour({ role }: ProductTourProps) {
 
   useLayoutEffect(() => {
     if (!active || !tooltipRef.current) {
-      setTooltipStyle(null);
       return;
     }
 
@@ -407,40 +410,51 @@ export function ProductTour({ role }: ProductTourProps) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
+    let left: number;
+    let top: number;
+
     if (!targetRect) {
-      const left = Math.max(padding, (viewportWidth - tooltipRect.width) / 2);
-      const top = Math.max(padding, (viewportHeight - tooltipRect.height) / 2);
-      setTooltipStyle({ left, top });
-      return;
+      left = Math.max(padding, (viewportWidth - tooltipRect.width) / 2);
+      top = Math.max(padding, (viewportHeight - tooltipRect.height) / 2);
+    } else {
+      const centerX = targetRect.left + targetRect.width / 2;
+      left = centerX - tooltipRect.width / 2;
+      left = Math.max(padding, Math.min(left, viewportWidth - tooltipRect.width - padding));
+
+      top = targetRect.bottom + 12;
+      if (top + tooltipRect.height > viewportHeight - padding) {
+        top = targetRect.top - tooltipRect.height - 12;
+      }
+      top = Math.max(padding, Math.min(top, viewportHeight - tooltipRect.height - padding));
     }
 
-    const centerX = targetRect.left + targetRect.width / 2;
-    let left = centerX - tooltipRect.width / 2;
-    left = Math.max(padding, Math.min(left, viewportWidth - tooltipRect.width - padding));
-
-    let top = targetRect.bottom + 12;
-    if (top + tooltipRect.height > viewportHeight - padding) {
-      top = targetRect.top - tooltipRect.height - 12;
-    }
-    top = Math.max(padding, Math.min(top, viewportHeight - tooltipRect.height - padding));
-
-    setTooltipStyle({ left, top });
+    tooltipRef.current.style.left = `${left}px`;
+    tooltipRef.current.style.top = `${top}px`;
   }, [active, targetRect, stepIndex]);
 
   useEffect(() => {
+    let frame: number | null = null;
+    const scheduleStart = () => {
+      frame = requestAnimationFrame(() => start());
+    };
+
     if (searchParams.get("tour") === "1") {
-      start();
+      scheduleStart();
     } else {
       try {
         const dismissed = localStorage.getItem(STORAGE_DISMISSED_KEY) === "true";
         const shouldResume = localStorage.getItem(STORAGE_ACTIVE_KEY) === "true";
         if (shouldResume && !dismissed) {
-          start();
+          scheduleStart();
         }
       } catch {
         // ignore
       }
     }
+
+    return () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
   }, [searchParams, start]);
 
   useEffect(() => {
@@ -468,6 +482,9 @@ export function ProductTour({ role }: ProductTourProps) {
   }
 
   const step = steps[stepIndex];
+  if (!step) {
+    return null;
+  }
   const highlightStyle: React.CSSProperties | null = targetRect
     ? {
         top: Math.max(0, targetRect.top - 8),
@@ -489,7 +506,6 @@ export function ProductTour({ role }: ProductTourProps) {
       <div
         ref={tooltipRef}
         className="fixed z-[101] w-[320px] rounded-xl border border-border bg-background p-4 shadow-xl"
-        style={tooltipStyle ?? undefined}
       >
         <div className="flex items-start justify-between gap-2">
           <div>
