@@ -13,6 +13,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import { HomeNav } from "@/components/home/home-nav";
 import { ContentContainer } from "@/components/shared/content-container";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -64,21 +65,27 @@ const outcomes = [
 
 const faqs = [
   {
-    question: "How does HealthIQ calculate risk?",
-    answer: "The MVP uses deterministic scoring based on age and conditions, with a roadmap to AI scoring for richer risk factors.",
+    question: "What is HealthIQ?",
+    answer:
+      "HealthIQ is a web-based, AI-powered Population Health Management platform that helps healthcare organizations identify high-risk patients, close care gaps, coordinate care teams, and prove outcomes in value-based care contracts.",
   },
   {
-    question: "What data is needed to get started?",
-    answer: "Patient demographics, diagnoses, care gaps, tasks, and basic quality measures are enough to power the demo.",
+    question: "Which core modules does the platform include?",
+    answer:
+      "Risk stratification, population KPIs and charts, care gap management, patient profiles, cohorts, care coordination tasks, workflow automation, quality measures reporting, and secure authentication with role-based access.",
+  },
+  
+  {
+    question: "What data is required to power the platform?",
+    answer:
+      "Core data includes organizations, users/roles, patients, conditions, risk scores, care gaps, care plans, tasks, outreach logs, quality measures, workflows, and cohorts. These enable risk insights, gap tracking, and coordinated care actions.",
   },
   {
-    question: "Can roles be customized?",
-    answer: "Admins can assign roles and control access. Navigation adapts to each role in the care team.",
+    question: "How does AI risk scoring work?",
+    answer:
+      "Risk scoring returns structured JSON with score, tier, and factors, is stored for auditability, and is not re-run on unchanged patients within 24 hours. Batch scoring is supported via edge functions.",
   },
-  {
-    question: "Is this production-ready?",
-    answer: "This release is MVP-focused for demos. EHR integrations, advanced AI, and audit tooling are planned next.",
-  },
+  
 ];
 
 const personas = [
@@ -335,16 +342,18 @@ export default async function HomePage() {
                 Learn how HealthIQ fits into value-based care programs and day-to-day workflows.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
+            <Accordion  className="max-w-3xl">
               {faqs.map((faq) => (
-                <Card key={faq.question} className="border-border/60 bg-card/80">
-                  <CardContent className="space-y-3 p-6">
-                    <p className="text-lg font-semibold text-foreground">{faq.question}</p>
-                    <p className="text-sm text-muted-foreground">{faq.answer}</p>
-                  </CardContent>
-                </Card>
+                <AccordionItem key={faq.question} value={faq.question}>
+                  <AccordionTrigger className="text-base text-foreground">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </ContentContainer>
         </section>
 
